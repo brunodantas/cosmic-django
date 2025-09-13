@@ -1,4 +1,4 @@
-from cosmic.cosmic.settings.test import *  # noqa: F403
+from settings.test import *  # noqa: F403
 
 DATABASES = {
     "default": {
