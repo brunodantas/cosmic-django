@@ -1,0 +1,122 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  PYTHON_VERSION: "3.13"
+
+jobs:
+  lint:
+    name: Lint with Ruff
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v2
+      with:
+        version: "latest"
+    
+    - name: Install dependencies
+      run: uv sync --dev
+    
+    - name: Lint with ruff (check)
+      run: uv run ruff check .
+    
+    - name: Lint with ruff (format check)
+      run: uv run ruff format --check .
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v2
+      with:
+        version: "latest"
+    
+    - name: Install dependencies
+      run: uv sync --dev
+    
+    - name: Run Django system checks
+      run: uv run python cosmic/manage.py check
+      env:
+        DJANGO_SETTINGS_MODULE: cosmic.settings.test
+        PYTHONPATH: .:cosmic
+    
+    - name: Run Django migrations check
+      run: uv run python cosmic/manage.py makemigrations --check --dry-run
+      env:
+        DJANGO_SETTINGS_MODULE: cosmic.settings.test
+        PYTHONPATH: .:cosmic
+    
+    - name: Run tests with pytest
+      run: uv run pytest --tb=short
+      env:
+        DJANGO_SETTINGS_MODULE: cosmic.settings.test
+        PYTHONPATH: .:cosmic
+
+  security:
+    name: Security Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v2
+      with:
+        version: "latest"
+    
+    - name: Install dependencies
+      run: uv sync --dev
+    
+    - name: Run Django security checks
+      run: uv run python cosmic/manage.py check --deploy
+      env:
+        DJANGO_SETTINGS_MODULE: cosmic.settings.test
+        PYTHONPATH: .:cosmic
+
+  dependency-check:
+    name: Dependency Vulnerabilities
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v2
+      with:
+        version: "latest"
+    
+    - name: Check for known security vulnerabilities
+      run: uv pip install safety && uv run safety check
+      continue-on-error: true  # Don't fail the build on vulnerabilities, just warn

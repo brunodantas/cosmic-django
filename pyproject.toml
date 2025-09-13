@@ -14,8 +14,10 @@ dependencies = [
 dev = [
     "pytest-django>=4.11.1",
     "pytest>=8.4.2",
+    "pytest-cov>=4.1.0",
     "ruff>=0.13.0",
     "pytest-sugar>=1.1.1",
     "ipdb>=0.13.13",
     "pydeps>=3.0.1",
+    "safety>=3.0.0",
 ]

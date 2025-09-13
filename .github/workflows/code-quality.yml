@@ -1,0 +1,60 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  quality-gates:
+    name: Quality Gates
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.13"
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v2
+      with:
+        version: "latest"
+    
+    - name: Install dependencies
+      run: uv sync --dev
+    
+    - name: Check for TODO/FIXME comments
+      run: |
+        echo "Checking for TODO/FIXME comments..."
+        if grep -r "TODO\|FIXME" --include="*.py" .; then
+          echo "⚠️  Found TODO/FIXME comments (not blocking)"
+        else
+          echo "✅ No TODO/FIXME comments found"
+        fi
+      continue-on-error: true
+    
+    - name: Check imports with ruff
+      run: uv run ruff check --select I .
+    
+    - name: Check for unused imports
+      run: uv run ruff check --select F401 .
+    
+    - name: Check for complexity
+      run: uv run ruff check --select C901 .
+    
+    - name: Generate dependency graph
+      run: |
+        cd cosmic
+        uv run pydeps core --show-deps --max-bacon=2 > ../dependency-report.json
+      continue-on-error: true
+    
+    - name: Upload dependency report
+      uses: actions/upload-artifact@v3
+      with:
+        name: dependency-report
+        path: dependency-report.json
+      if: always()
