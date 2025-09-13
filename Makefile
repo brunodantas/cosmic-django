@@ -115,15 +115,6 @@ lint-fix:
 	@echo "Fixing linting issues automatically..."
 	uv run ruff check --fix .
 
-# Docker Commands
-docker-build:
-	@echo "Building Docker image..."
-	docker build -t cosmic-django .
-
-docker-run:
-	@echo "Running Docker container..."
-	docker run -p 8000:8000 -e DJANGO_DEBUG=True cosmic-django
-
 # Utility Commands
 reset-db:
 	@echo "Resetting database..."
