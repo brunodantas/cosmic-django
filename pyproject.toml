@@ -21,3 +21,6 @@ dev = [
     "pydeps>=3.0.1",
     "safety>=3.0.0",
 ]
+
+[tool.ruff]
+exclude = ["cosmic/core/__init__.py"]
