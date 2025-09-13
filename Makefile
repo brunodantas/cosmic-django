@@ -91,7 +91,7 @@ test-verbose:
 
 test-coverage:
 	@echo "Running tests with coverage..."
-	uv run pytest --cov=allocation --cov=cosmic --cov-report=html --cov-report=term
+	uv run pytest --cov=allocation --cov=core --cov-report=xml
 
 test-file:
 	@echo "Running specific test file: $(FILE)"

@@ -43,13 +43,13 @@ jobs:
         PYTHONPATH: .:cosmic
     
     - name: Run tests
-      run: uv run pytest --tb=short -v
+      run: make test
       env:
         DJANGO_SETTINGS_MODULE: cosmic.settings.test
         PYTHONPATH: .:cosmic
     
     - name: Generate coverage report
-      run: uv run pytest --cov=allocation --cov=core --cov-report=xml
+      run: make test-coverage
       env:
         DJANGO_SETTINGS_MODULE: cosmic.settings.test
         PYTHONPATH: .:cosmic
