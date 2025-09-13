@@ -2,9 +2,10 @@ import threading
 import time
 import uuid
 
-from django.db.transaction import atomic
 import pytest
 from allocation import models
+from django.db.transaction import atomic
+
 from core.logic.logic import allocate_from_batches
 
 

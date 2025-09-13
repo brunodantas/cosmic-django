@@ -2,7 +2,6 @@ from datetime import date
 
 from allocation import signals, views
 
-
 today = date.today()
 
 

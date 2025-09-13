@@ -3,6 +3,7 @@ from unittest.mock import MagicMock
 
 from allocation import signals
 from allocation.models import Batch, OrderLine
+
 from core.logic.logic import allocate_from_batches
 
 today = date.today()

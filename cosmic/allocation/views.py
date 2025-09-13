@@ -1,9 +1,9 @@
 import datetime
 
+from core.service import service
 from django import http
 
 from allocation import signals
-from core.service import service
 
 
 def allocations(order_id: str):
