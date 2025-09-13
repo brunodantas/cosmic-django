@@ -69,7 +69,7 @@ jobs:
         PYTHONPATH: .:cosmic
     
     - name: Run tests with pytest
-      run: uv run pytest --tb=short
+      run: make test
       env:
         DJANGO_SETTINGS_MODULE: cosmic.settings.test
         PYTHONPATH: .:cosmic
