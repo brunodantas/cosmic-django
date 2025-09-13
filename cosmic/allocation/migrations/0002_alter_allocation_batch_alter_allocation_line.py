@@ -5,20 +5,27 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('allocation', '0001_initial'),
+        ("allocation", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='allocation',
-            name='batch',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='allocations', to='allocation.batch'),
+            model_name="allocation",
+            name="batch",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="allocations",
+                to="allocation.batch",
+            ),
         ),
         migrations.AlterField(
-            model_name='allocation',
-            name='line',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='allocations', to='allocation.orderline'),
+            model_name="allocation",
+            name="line",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="allocations",
+                to="allocation.orderline",
+            ),
         ),
     ]
