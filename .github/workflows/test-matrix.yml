@@ -1,0 +1,63 @@
+name: Test Matrix
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run weekly on Sundays at 3 AM UTC
+    - cron: '0 3 * * 0'
+
+jobs:
+  test-matrix:
+    name: Test Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+        django-version: ["5.2"]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v2
+      with:
+        version: "latest"
+    
+    - name: Install dependencies
+      run: uv sync --dev
+    
+    - name: Run Django checks
+      run: uv run python cosmic/manage.py check
+      env:
+        DJANGO_SETTINGS_MODULE: cosmic.settings.test
+        PYTHONPATH: .
+    
+    - name: Run tests
+      run: make test
+      env:
+        DJANGO_SETTINGS_MODULE: cosmic.settings.test
+        PYTHONPATH: .
+    
+    - name: Generate coverage report
+      run: make test-coverage
+      env:
+        DJANGO_SETTINGS_MODULE: cosmic.settings.test
+        PYTHONPATH: .
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
