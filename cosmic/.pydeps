@@ -1,0 +1,10 @@
+[pydeps]
+max_bacon = 2
+no_show = True
+verbose = 0
+max_module_depth = 2
+exclude =
+    django
+    core.tests
+exclude_exact =
+    allocation
