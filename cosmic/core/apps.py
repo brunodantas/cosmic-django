@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class CoreAppConfig(AppConfig):
-    name = "cosmic.core"
+    name = "core"
     label = "core"
