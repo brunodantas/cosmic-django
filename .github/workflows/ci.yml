@@ -60,19 +60,19 @@ jobs:
       run: uv run python cosmic/manage.py check
       env:
         DJANGO_SETTINGS_MODULE: cosmic.settings.test
-        PYTHONPATH: .:cosmic
+        PYTHONPATH: .
     
     - name: Run Django migrations check
       run: uv run python cosmic/manage.py makemigrations --check --dry-run
       env:
         DJANGO_SETTINGS_MODULE: cosmic.settings.test
-        PYTHONPATH: .:cosmic
+        PYTHONPATH: .
     
     - name: Run tests with pytest
       run: make test
       env:
         DJANGO_SETTINGS_MODULE: cosmic.settings.test
-        PYTHONPATH: .:cosmic
+        PYTHONPATH: .
 
   security:
     name: Security Checks
@@ -98,7 +98,7 @@ jobs:
       run: uv run python cosmic/manage.py check --deploy
       env:
         DJANGO_SETTINGS_MODULE: cosmic.settings.test
-        PYTHONPATH: .:cosmic
+        PYTHONPATH: .
 
   dependency-check:
     name: Dependency Vulnerabilities

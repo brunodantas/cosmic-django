@@ -40,19 +40,19 @@ jobs:
       run: uv run python cosmic/manage.py check
       env:
         DJANGO_SETTINGS_MODULE: cosmic.settings.test
-        PYTHONPATH: .:cosmic
+        PYTHONPATH: .
     
     - name: Run tests
       run: make test
       env:
         DJANGO_SETTINGS_MODULE: cosmic.settings.test
-        PYTHONPATH: .:cosmic
+        PYTHONPATH: .
     
     - name: Generate coverage report
       run: make test-coverage
       env:
         DJANGO_SETTINGS_MODULE: cosmic.settings.test
-        PYTHONPATH: .:cosmic
+        PYTHONPATH: .
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
